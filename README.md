@@ -20,4 +20,4 @@
 - `dotnet build`
 - `dotnet run`
 
-Open your browser at `http://localhost:8080` or `http://localhost:8081` 
+Open your browser at `http://localhost:8080` or `http://localhost:8081`

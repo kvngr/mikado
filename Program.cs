@@ -1,5 +1,4 @@
 using System;
-using Mikado.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Mikado.Models;
 
 namespace Mikado
 {
@@ -31,7 +31,7 @@ namespace Mikado
 
         try
         {
-          var context = services.GetRequiredService<MediaContext>();
+          var context = services.GetRequiredService<MediaDbContext>();
           context.Database.EnsureCreated();
           logger.LogInformation("Database created 🚀 🎉");
         }

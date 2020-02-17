@@ -1,0 +1,110 @@
+<form>
+  <div class="form-group">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="radio-type-media"
+        id="book-radio"
+        value="book"
+        checked
+      />
+      <label class="form-check-label" for="book">
+        Book
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="radio-type-media"
+        id="music-radio"
+        value="music"
+      />
+      <label class="form-check-label" for="music">
+        Music
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="radio-type-media"
+        id="movie-radio"
+        value="movie"
+      />
+      <label class="form-check-label" for="movie">
+        Movie
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputTitle">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      id="inputTitle"
+      aria-describedby="titleHelp"
+      placeholder="Enter Title"
+    />
+    <small id="titleHelp" class="form-text text-muted"
+      >Give a title for your media.</small
+    >
+  </div>
+  <div class="form-group">
+    <label for="inputAuthor">Author</label>
+    <input
+      type="text"
+      class="form-control"
+      id="inputAuthor"
+      aria-describedby="authorHelp"
+      placeholder="Enter Author"
+    />
+    <small id="authorHelp" class="form-text text-muted">Author's media</small>
+  </div>
+  <div class="form-group">
+    <label for="inputContent">Content</label>
+    <input
+      type="text"
+      class="form-control"
+      id="inputContent"
+      aria-describedby="contentHelp"
+      placeholder="Enter Content"
+    />
+    <small id="contentHelp" class="form-text text-muted"
+      >Give some description about this media</small
+    >
+  </div>
+</form>
+
+<!-- <h1>{{ actionType }} blog post</h1>
+<form [formGroup]="form" (ngSubmit)="save()" #formDir="ngForm" novalidate>
+  <div class="form-group row">
+    <label class=" control-label col-md-12">Title</label>
+    <div class="col-md-12">
+      <input class="form-control" type="text" formControlName="title" />
+    </div>
+    <span class="text-danger ml-3" *ngIf="title.invalid && formDir.submitted">
+      Title is required.
+    </span>
+  </div>
+  <div class="form-group row">
+    <label class="control-label col-md-12" for="Body">Body text</label>
+    <div class="col-md-12">
+      <textarea
+        class="form-control"
+        rows="15"
+        formControlName="body"
+      ></textarea>
+    </div>
+    <span class="text-danger ml-3" *ngIf="body.invalid && formDir.submitted">
+      Body is required.
+    </span>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-success float-right">Save</button>
+    <button class="btn btn-secondary float-left" (click)="cancel()">
+      Cancel
+    </button>
+  </div>
+</form> -->

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Mikado.Models;
 using Mikado.Data;
 
 namespace Mikado
@@ -29,7 +30,18 @@ namespace Mikado
         configuration.RootPath = "ClientApp/dist";
       });
 
-      services.AddDbContext<MediaContext>(options => options.UseNpgsql(Configuration.GetConnectionString("MediaContext")));
+      services.AddDbContext<MediaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("MediaContext")));
+
+      services.AddCors(options =>
+      {
+        options.AddPolicy("CorsPolicy",
+            builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+        // .AllowCredentials());
+      });
+
+      services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +58,10 @@ namespace Mikado
         app.UseHsts();
       }
 
+      app.UseCors("CorsPolicy");
       app.UseHttpsRedirection();
       app.UseStaticFiles();
+
       if (!env.IsDevelopment())
       {
         app.UseSpaStaticFiles();
