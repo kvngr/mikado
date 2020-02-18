@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-public enum MediaType
-{
-  Book,
-  Music,
-  Movie
-}
-
 namespace Mikado.Models
 {
   public class MediaDbContext : DbContext
@@ -45,7 +38,7 @@ namespace Mikado.Models
     [Key]
     public int MediaId { get; set; }
     [Required]
-    public MediaType Type { get; set; }
+    public string Type { get; set; }
     [Required]
     public string Title { get; set; }
     [Required]

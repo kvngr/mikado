@@ -14,7 +14,7 @@ export class FormMediaComponent implements OnInit {
   form: FormGroup;
   actionType: ActionFormType;
   formTitle: string;
-  formMediaType: MediaType;
+  formMediaType: string;
   formAuthor: string;
   formContent: string;
   mediaId: number;
@@ -29,10 +29,10 @@ export class FormMediaComponent implements OnInit {
   ) {
     const idParam = "id";
     this.actionType = "Add";
-    this.formMediaType = "Book";
+    this.formMediaType = "type";
     this.formTitle = "title";
-    this.formAuthor = "title";
-    this.formContent = "body";
+    this.formAuthor = "author";
+    this.formContent = "content";
 
     if (this.activatedRoute.snapshot.params[idParam]) {
       this.mediaId = this.activatedRoute.snapshot.params[idParam];
@@ -40,7 +40,7 @@ export class FormMediaComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       mediaId: 0,
-      type: ["", [Validators.required]],
+      type: ["Book", [Validators.required]],
       title: ["", [Validators.required]],
       author: ["", [Validators.required]],
       content: ["", [Validators.required]]
@@ -48,6 +48,10 @@ export class FormMediaComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(
+      "TCL: FormMediaComponent -> ngOnInit -> this.mediaId",
+      this.mediaId
+    );
     if (this.mediaId > 0) {
       this.actionType = "Edit";
       this.mediaService
@@ -55,7 +59,9 @@ export class FormMediaComponent implements OnInit {
         .subscribe(
           data => (
             (this.existingMedia = data),
+            this.form.controls[this.formMediaType].setValue(data.type),
             this.form.controls[this.formTitle].setValue(data.title),
+            this.form.controls[this.formAuthor].setValue(data.author),
             this.form.controls[this.formContent].setValue(data.content)
           )
         );
@@ -70,19 +76,38 @@ export class FormMediaComponent implements OnInit {
     if (this.actionType === "Add") {
       const media: Media = {
         date: new Date(),
+        type: this.form.get(this.formMediaType).value,
+        title: this.form.get(this.formTitle).value,
+        author: this.form.get(this.formAuthor).value,
+        content: this.form.get(this.formContent).value
+      };
+      this.mediaService.createMedia(media).subscribe(data => {
+        this.router.navigate(["/medias", data.mediaId]);
+      });
+    }
+
+    if (this.actionType === "Edit") {
+      console.log(
+        "TCL: FormMediaComponent -> save -> this.existingMedia",
+        this.existingMedia
+      );
+      const media: Media = {
+        mediaId: this.existingMedia.mediaId,
+        date: this.existingMedia.date,
         title: this.form.get(this.formTitle).value,
         type: this.form.get(this.formMediaType).value,
         author: this.form.get(this.formAuthor).value,
         content: this.form.get(this.formContent).value
       };
-      this.mediaService.createMedia(media).subscribe(data => {
-        this.router.navigate(["/media", data.mediaId]);
+      console.log("TCL: FormMediaComponent -> save -> media", media);
+      this.mediaService.updateMedia(media.mediaId, media).subscribe(data => {
+        this.router.navigate([this.router.url]);
       });
     }
   }
 
   cancel() {
-    this.router.navigate(["/"]);
+    this.router.navigate(["/medias"]);
   }
 
   get type() {

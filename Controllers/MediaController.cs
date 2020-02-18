@@ -10,9 +10,9 @@ using Mikado.Models;
 
 namespace Mikado.MediaController
 {
-  [ApiController]
-  [Route("api/[controller]")]
   [Produces("application/json")]
+  [Route("api/[controller]")]
+  [ApiController]
   public class MediaController : ControllerBase
   {
     private readonly MediaDbContext _context;

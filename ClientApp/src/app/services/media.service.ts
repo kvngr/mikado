@@ -19,7 +19,7 @@ export class MediaService {
 
   constructor(private http: HttpClient) {
     this.APP_URL = environment.appUrl;
-    this.API_URL = "api/media";
+    this.API_URL = "api/media/";
   }
 
   // GET ALL MEDIAS
@@ -40,7 +40,7 @@ export class MediaService {
   createMedia(media: Media): Observable<Media> {
     return this.http
       .post<Media>(
-        this.API_URL + this.APP_URL,
+        this.APP_URL + this.API_URL,
         JSON.stringify(media),
         this.httpOptions
       )
@@ -61,7 +61,7 @@ export class MediaService {
   // DELETE ONE MEDIA
   deleteMedia(mediaId: number): Observable<Media> {
     return this.http
-      .delete<Media>(this.API_URL + this.APP_URL + mediaId)
+      .delete<Media>(this.APP_URL + this.API_URL + mediaId)
       .pipe(retry(1), catchError(this.errorHandler));
   }
 
