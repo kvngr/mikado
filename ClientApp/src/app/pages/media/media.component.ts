@@ -28,6 +28,5 @@ export class MediaComponent implements OnInit {
 
   loadMedia() {
     this.media = this.mediaService.getMedia(this.mediaId);
-    console.log("TCL: MediaComponent -> loadMedia -> this.media", this.media);
   }
 }

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MediaService } from "../../services/media.service";
 import { Media } from "../../interfaces";
-import { ActionFormType, MediaType } from "src/app/types/media";
+import { ActionFormType } from "src/app/types/media";
 
 @Component({
   selector: "app-form-media",
@@ -48,10 +48,6 @@ export class FormMediaComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(
-      "TCL: FormMediaComponent -> ngOnInit -> this.mediaId",
-      this.mediaId
-    );
     if (this.mediaId > 0) {
       this.actionType = "Edit";
       this.mediaService
@@ -87,10 +83,6 @@ export class FormMediaComponent implements OnInit {
     }
 
     if (this.actionType === "Edit") {
-      console.log(
-        "TCL: FormMediaComponent -> save -> this.existingMedia",
-        this.existingMedia
-      );
       const media: Media = {
         mediaId: this.existingMedia.mediaId,
         date: this.existingMedia.date,
@@ -99,9 +91,8 @@ export class FormMediaComponent implements OnInit {
         author: this.form.get(this.formAuthor).value,
         content: this.form.get(this.formContent).value
       };
-      console.log("TCL: FormMediaComponent -> save -> media", media);
       this.mediaService.updateMedia(media.mediaId, media).subscribe(data => {
-        this.router.navigate([this.router.url]);
+        this.router.navigate(["/medias"]);
       });
     }
   }

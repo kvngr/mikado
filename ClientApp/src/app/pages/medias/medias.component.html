@@ -1,13 +1,13 @@
 <h1 id="tableLabel">Medias</h1>
 
 <p>
-  Here you can see your all registered medias and add, update or delete a media
+  Here you can see your all registered medias and add, update or delete one
 </p>
 
 <p *ngIf="!(medias | async)"><em>Loading...</em></p>
 
 <p>
-  <a [routerLink]="['/media/add']" class="btn btn-primary float-right mb-3"
+  <a [routerLink]="['/add-media']" class="btn btn-primary float-right mb-3"
     >New Media</a
   >
 </p>

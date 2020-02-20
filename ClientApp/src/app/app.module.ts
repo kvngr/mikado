@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: "full" },
   { path: "medias", component: MediasComponent },
   { path: "media/:id", component: MediaComponent },
-  { path: "media/add", component: FormMediaComponent },
+  { path: "add-media", component: FormMediaComponent },
   { path: "media/edit/:id", component: FormMediaComponent },
   { path: "**", redirectTo: "/" }
 ];

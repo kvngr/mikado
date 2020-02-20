@@ -1,8 +1,25 @@
 <ng-container *ngIf="media | async as media; else loading">
-  <div>{{ media.type }}</div>
-  <div>{{ media.title }}</div>
-  <div>{{ media.content }}</div>
-  <div>{{ media.author }}</div>
-  <div>{{ media.date }}</div>
+  <table class="table table-striped" aria-labelledby="tableLabel">
+    <thead>
+      <tr>
+        <th>Media type</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Content</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ media.type }}</td>
+        <td>
+          {{ media.title }}
+        </td>
+        <td>{{ media.author }}</td>
+        <td>{{ media.content }}</td>
+        <td>{{ media.date | date: "dd/MM/y" }}</td>
+      </tr>
+    </tbody>
+  </table>
 </ng-container>
 <ng-template #loading>Loading…</ng-template>

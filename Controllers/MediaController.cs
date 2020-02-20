@@ -24,13 +24,14 @@ namespace Mikado.MediaController
       _repo = repo;
     }
 
-    // GET: api/Medias
+    // GET ALL
     [HttpGet]
     public IEnumerable<Media> GetMedias()
     {
       return _context.Medias.OrderByDescending(media => media.MediaId);
     }
 
+    // FIND ONE
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMedia([FromRoute] int id)
     {
@@ -44,9 +45,10 @@ namespace Mikado.MediaController
       {
         return NotFound();
       }
-      return Ok(ModelState);
+      return Ok(media);
     }
 
+    // UPDATE ONE
     [HttpPut("{id}")]
     public async Task<IActionResult> PutMedia([FromRoute] int id, [FromBody] Media media)
     {
@@ -82,6 +84,7 @@ namespace Mikado.MediaController
       return NoContent();
     }
 
+    // CREATE
     [HttpPost]
     public async Task<IActionResult> PostMedia([FromBody] Media media)
     {
@@ -96,6 +99,7 @@ namespace Mikado.MediaController
       return CreatedAtAction("GetMedia", new { id = media.MediaId }, media);
     }
 
+    // DELETE ONE
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMedia([FromRoute] int id)
     {
