@@ -1,11 +1,9 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Mikado.Models;
 
 namespace Mikado.MediaController

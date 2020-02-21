@@ -16,7 +16,8 @@
 *In your terminal, execute the following commands :*
 
 - `git clone https://github.com/kvngr/mikado`
-- `👉 ./docker.setup.sh` *(this script will install postgres container and will create a new database)*
+- `cd mikado`
+- `./docker.setup.sh` 👉 *(this script will install postgres container and will create a new database)*
 - `dotnet build`
 - `dotnet run`
 

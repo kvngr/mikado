@@ -4,39 +4,38 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule, Routes } from "@angular/router";
 
+import { appRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./components/nav-menu/nav-menu.component";
 import { FormMediaComponent } from "./components/form-media/form-media.component";
 import { HomeComponent } from "./pages/home/home.component";
+import { LoginComponent } from "./pages/login/login.component";
 import { MediasComponent } from "./pages/medias/medias.component";
 import { MediaComponent } from "./pages/media/media.component";
 
-const routes: Routes = [
-  { path: "", component: HomeComponent, pathMatch: "full" },
-  { path: "medias", component: MediasComponent },
-  { path: "media/:id", component: MediaComponent },
-  { path: "add-media", component: FormMediaComponent },
-  { path: "media/edit/:id", component: FormMediaComponent },
-  { path: "**", redirectTo: "/" }
-];
+import { JwtInterceptor, ErrorInterceptor } from "./helpers";
 
 @NgModule({
+  imports: [
+    appRoutingModule,
+    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    LoginComponent,
     FormMediaComponent,
     MediasComponent,
     MediaComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes, { onSameUrlNavigation: "reload" })
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

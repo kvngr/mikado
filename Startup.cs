@@ -1,13 +1,22 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Mikado.Models;
 using Mikado.Data;
+using Mikado.Helpers;
+using Mikado.Services;
 
 namespace Mikado
 {
@@ -32,6 +41,11 @@ namespace Mikado
 
       services.AddDbContext<MediaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("MediaContext")));
 
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mikao API", Version = "v1" });
+      });
+
       services.AddCors(options =>
       {
         options.AddPolicy("CorsPolicy",
@@ -40,7 +54,36 @@ namespace Mikado
                 .AllowAnyHeader());
         // .AllowCredentials());
       });
+      services.AddControllers();
 
+      var appSettingsSection = Configuration.GetSection("AppSettings");
+      services.Configure<AppSettings>(appSettingsSection);
+
+      // configure jwt authentication
+      var appSettings = appSettingsSection.Get<AppSettings>();
+      var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+      services.AddAuthentication(x =>
+      {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+      .AddJwtBearer(x =>
+      {
+        x.RequireHttpsMetadata = false;
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateIssuerSigningKey = true,
+          IssuerSigningKey = new SymmetricSecurityKey(key),
+          ValidateIssuer = false,
+          ValidateAudience = false
+        };
+      });
+
+      services.AddScoped<IUserService, UserService>();
+      //services.AddScoped<IUserService, UserService>();
+      // services.AddSingleton<IUserService, UserService>((s) => new UserService(appSettings));
+      //services.AddScoped(typeof(IUserService), typeof(UserService));
       services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
     }
 
@@ -58,8 +101,15 @@ namespace Mikado
         app.UseHsts();
       }
 
-      app.UseCors("CorsPolicy");
-      app.UseHttpsRedirection();
+      app.UseRouting();
+
+      app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
+      app.UseAuthentication();
+      app.UseAuthorization();
       app.UseStaticFiles();
 
       if (!env.IsDevelopment())
@@ -67,7 +117,12 @@ namespace Mikado
         app.UseSpaStaticFiles();
       }
 
-      app.UseRouting();
+      app.UseSwagger();
+
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mikao API V1");
+      });
 
       app.UseEndpoints(endpoints =>
       {
