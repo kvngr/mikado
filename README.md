@@ -18,7 +18,6 @@
 - `git clone https://github.com/kvngr/mikado`
 - `cd mikado`
 - `./docker.setup.sh` 👉 *(this script will install postgres container and will create a new database)*
-- `dotnet build`
-- `dotnet run`
+- `dotnet build && dotnet run`
 
 Open your browser at `http://localhost:8080` or `http://localhost:8081`

@@ -7,9 +7,9 @@ using Mikado.Data;
 
 namespace Mikado.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/[controller]")]
+  [Authorize]
   [ApiController]
+  [Route("[controller]")]
 
   public class AuthController : ControllerBase
   {
@@ -25,14 +25,11 @@ namespace Mikado.Controllers
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public async Task<IActionResult> Authenticate([FromBody]Authenticate user)
+    public IActionResult Authenticate([FromBody]Authenticate user)
     {
       var authUser = _userService.Authenticate(user.Username, user.Password);
-      var savedUser = await _context.Users.FindAsync(user);
 
-      bool validPassword = BCrypt.Net.BCrypt.Verify(savedUser.Password, user.Password);
-
-      if (authUser == null || !validPassword)
+      if (authUser == null)
         return BadRequest(new { message = "Username or password is incorrect" });
 
       return Ok(user);
